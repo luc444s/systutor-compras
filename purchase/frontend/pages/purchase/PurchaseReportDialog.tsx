@@ -34,9 +34,21 @@ function formatMoney(value: number) {
   return `S/ ${value.toFixed(2)}`;
 }
 
+function buildReportCorrelativeMap(orders: PurchaseOrdersReport["orders"]) {
+  return new Map(
+    [...orders]
+      .sort((a, b) => {
+        const byCreatedAt = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        return byCreatedAt || a.order_id.localeCompare(b.order_id);
+      })
+      .map((order, index) => [order.order_id, String(index + 1).padStart(8, "0")]),
+  );
+}
+
 export function PurchaseReportDialog({ open, onClose }: PurchaseReportDialogProps) {
   const [range, setRange] = useState(todayRange);
   const [report, setReport] = useState<PurchaseOrdersReport | null>(null);
+  const reportCorrelatives = report ? buildReportCorrelativeMap(report.orders) : new Map<string, string>();
 
   useEffect(() => {
     if (open) setRange(todayRange());
@@ -90,8 +102,7 @@ export function PurchaseReportDialog({ open, onClose }: PurchaseReportDialogProp
             <DataTable
               dense
               columns={[
-                { key: "correlative", header: "Correlativo", render: (row) => row.correlative_full_number ?? "-" },
-                { key: "order", header: "ID orden de compra", render: (row) => row.order_id },
+                { key: "correlative", header: "Correlativo", render: (row) => row.correlative_full_number ?? reportCorrelatives.get(row.order_id) ?? "-" },
                 { key: "created_at", header: "Creada", render: (row) => new Date(row.created_at).toLocaleString() },
                 { key: "party", header: "Proveedor", render: (row) => row.party_name ?? "-" },
                 { key: "status", header: "Estado", render: (row) => row.status },
