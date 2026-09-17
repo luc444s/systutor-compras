@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "../../../../../../apps/web/src/lib/react-query";
 import { FormEvent, useEffect, useState } from "react";
-import { Link } from "../../../../../../apps/web/src/lib/router";
 import {
   createOrder,
   listOrders,
@@ -148,12 +147,9 @@ export function OrdersPanel({ error, setError, products, onOrderClick }: OrdersP
     <>
       <CommerceSection
         title="Órdenes de compra"
-        description="Gestiona órdenes a proveedores y accede al ingreso desde proveedor para recepcionar mercadería."
+        description="Gestiona órdenes a proveedores y su seguimiento comercial."
         actions={
           <div className="flex gap-2">
-            <Link to="/app/commerce/ingreso-desde-proveedor">
-              <Button variant="secondary">Ingreso desde proveedor</Button>
-            </Link>
             <Button variant="secondary" onClick={() => setIsSuppliersOpen(true)}>Proveedores</Button>
             <Button onClick={() => { setCreateForm({ supplier_id: "", items: [], notes: "" }); setError(null); setIsCreateOpen(true); }}>Nueva orden</Button>
           </div>

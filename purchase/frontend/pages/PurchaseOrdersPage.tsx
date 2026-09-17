@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "../../../../../apps/web/s
 import { useRef, useState } from "react";
 import { Button } from "@systutor/shell/ui/button";
 import { Dialog } from "@systutor/shell/ui/dialog";
-import { Link } from "../../../../../apps/web/src/lib/router";
 import { listAllProducts } from "../../../../productos/frontend/api";
 import { cancelOrder, closeOrder, confirmOrder } from "../api";
 import { OrdersPanel } from "./purchase/OrdersPanel";
@@ -97,11 +96,6 @@ export function PurchaseOrdersPage() {
           <div className="space-y-2">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Acciones de orden</p>
             <div className="grid gap-3">
-              {launcherOrder && (launcherOrder.status === "ORDERED" || launcherOrder.status === "PARTIAL") ? (
-                <Link to={`/app/commerce/ingreso-desde-proveedor?orderId=${encodeURIComponent(launcherOrder.id)}`}>
-                  <Button type="button" variant="secondary" className="w-full">Recepcionar</Button>
-                </Link>
-              ) : null}
               {launcherOrder?.status === "DRAFT" ? (
                 <Button type="button" variant="secondary" className="w-full" onClick={() => confirmMut.mutate(launcherOrder.id)} disabled={confirmMut.isPending}>
                   {confirmMut.isPending ? "Confirmando..." : "Confirmar"}
