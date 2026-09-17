@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from plugins.commerce.purchase.backend.models import (
@@ -204,6 +204,44 @@ def update_order(
 def confirm_order(
     db: Session, *, order: ComPurchaseOrder, user_id: str | None = None
 ) -> ComPurchaseOrder:
+    row = db.execute(
+        text(
+            """
+            SELECT id, series, next_number
+            FROM cfg_document_series
+            WHERE tenant_id = :tenant_id
+              AND document_type = 'ORDEN_COMPRA'
+              AND is_default = TRUE
+              AND is_active = TRUE
+            LIMIT 1
+            """
+        ),
+        {"tenant_id": order.tenant_id},
+    ).first()
+    if row is None:
+        raise ValueError("No hay correlativo configurado para órdenes de compra")
+
+    series_id: str = row.id
+    series_code: str = row.series
+    current_number: int = row.next_number
+
+    db.execute(
+        text(
+            "UPDATE cfg_document_series SET next_number = next_number + 1 WHERE id = :series_id"
+        ),
+        {"series_id": series_id},
+    )
+
+    padded = str(current_number).zfill(8)
+    full_number = f"{series_code}-{padded}"
+
+    order.correlative_series_id = series_id
+    order.correlative_series = series_code
+    order.correlative_number = current_number
+    order.correlative_full_number = full_number
+    db.add(order)
+    db.flush()
+
     return transition(db, order=order, target="ORDERED", user_id=user_id)
 
 

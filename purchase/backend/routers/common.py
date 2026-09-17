@@ -26,6 +26,7 @@ def _internal_token() -> str:
     con credenciales configuradas y usamos ese JWT.
     """
     import httpx
+    import os
 
     from systutor.core.config import get_settings
 
@@ -33,8 +34,8 @@ def _internal_token() -> str:
     response = httpx.post(
         "http://localhost:8000/api/v1/auth/login",
         json={
-            "email": s.internal_user_email,
-            "password": s.internal_user_password,
+            "email": os.getenv("SYSTUTOR_INTERNAL_USER_EMAIL", s.seed_admin_email),
+            "password": os.getenv("SYSTUTOR_INTERNAL_USER_PASSWORD", s.seed_admin_password),
         },
         timeout=10,
     )

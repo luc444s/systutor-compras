@@ -152,6 +152,12 @@ class ComPurchaseOrder(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=_utc_now, onupdate=_utc_now
     )
+    correlative_series_id: Mapped[str | None] = mapped_column(
+        ForeignKey("cfg_document_series.id"), nullable=True
+    )
+    correlative_series: Mapped[str | None] = mapped_column(String(4), nullable=True)
+    correlative_number: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    correlative_full_number: Mapped[str | None] = mapped_column(String(20), nullable=True)
 
     items: Mapped[list[ComPurchaseItem]] = relationship(
         back_populates="order", cascade="all, delete-orphan"

@@ -54,6 +54,7 @@ def get_purchase_orders_report(db: Session, *, tenant_id: str, start: datetime, 
               o.created_at,
               s.name AS party_name,
               o.status,
+              o.correlative_full_number,
               CASE
                 WHEN o.status = 'CANCELLED' THEN 0
                 ELSE COALESCE(SUM(i.quantity * i.unit_cost), 0)
@@ -66,7 +67,7 @@ def get_purchase_orders_report(db: Session, *, tenant_id: str, start: datetime, 
               AND o.created_at >= :start
               AND o.created_at <= :end
               AND o.status != 'DRAFT'
-            GROUP BY o.id, o.created_at, s.name, o.status
+            GROUP BY o.id, o.created_at, s.name, o.status, o.correlative_full_number
             ORDER BY o.created_at DESC
             """
         ),
@@ -96,6 +97,7 @@ def get_purchase_orders_report(db: Session, *, tenant_id: str, start: datetime, 
                 "status": row.status,
                 "amount": float(row.amount),
                 "counts_towards_total": bool(row.counts_towards_total),
+                "correlative_full_number": row.correlative_full_number,
             }
             for row in order_rows
         ],

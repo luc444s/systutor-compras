@@ -26,6 +26,7 @@ class PurchaseReportOrderRead(BaseModel):
     status: str
     amount: float
     counts_towards_total: bool
+    correlative_full_number: str | None = None
 
 
 class PurchaseOrdersReportRead(BaseModel):

@@ -104,6 +104,10 @@ export type PurchaseOrder = {
   created_by: string;
   created_at: string;
   updated_at: string;
+  correlative_series_id: string | null;
+  correlative_series: string | null;
+  correlative_number: number | null;
+  correlative_full_number: string | null;
 };
 
 export type PurchaseOrderDetail = PurchaseOrder & {

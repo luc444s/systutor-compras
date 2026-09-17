@@ -90,6 +90,7 @@ export function PurchaseReportDialog({ open, onClose }: PurchaseReportDialogProp
             <DataTable
               dense
               columns={[
+                { key: "correlative", header: "Correlativo", render: (row) => row.correlative_full_number ?? "-" },
                 { key: "order", header: "ID orden de compra", render: (row) => row.order_id },
                 { key: "created_at", header: "Creada", render: (row) => new Date(row.created_at).toLocaleString() },
                 { key: "party", header: "Proveedor", render: (row) => row.party_name ?? "-" },

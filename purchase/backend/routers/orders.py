@@ -41,6 +41,10 @@ def _serialize_order(order: ComPurchaseOrder) -> dict:
         "created_by": order.created_by,
         "created_at": order.created_at,
         "updated_at": order.updated_at,
+        "correlative_series_id": order.correlative_series_id,
+        "correlative_series": order.correlative_series,
+        "correlative_number": order.correlative_number,
+        "correlative_full_number": order.correlative_full_number,
     }
 
 

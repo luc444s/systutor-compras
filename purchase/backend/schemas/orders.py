@@ -83,6 +83,10 @@ class PurchaseOrderRead(BaseModel):
     created_by: str
     created_at: datetime
     updated_at: datetime
+    correlative_series_id: str | None = None
+    correlative_series: str | None = None
+    correlative_number: int | None = None
+    correlative_full_number: str | None = None
 
 
 class PurchaseOrderDetailRead(PurchaseOrderRead):

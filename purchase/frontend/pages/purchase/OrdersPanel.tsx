@@ -180,6 +180,7 @@ export function OrdersPanel({ error, setError, products, onOrderClick, onOpenRep
         <DataTable
           onRowClick={onOrderClick}
           columns={[
+            { key: "correlative", header: "Correlativo", render: (row) => row.correlative_full_number ?? "-" },
             { key: "supplier", header: "Proveedor", render: (row) => row.supplier?.name ?? "-" },
             { key: "status", header: "Estado", render: (row) => <Badge className={STATUS_BADGE[row.status] ?? ""}>{STATUS_LABEL[row.status] ?? row.status}</Badge> },
             { key: "date", header: "Fecha", render: (row) => row.order_date },
