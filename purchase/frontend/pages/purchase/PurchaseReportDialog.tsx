@@ -90,11 +90,12 @@ export function PurchaseReportDialog({ open, onClose }: PurchaseReportDialogProp
             <DataTable
               dense
               columns={[
-                { key: "order", header: "Orden", render: (row) => row.order_id.slice(0, 8) },
+                { key: "order", header: "ID orden de compra", render: (row) => row.order_id },
                 { key: "created_at", header: "Creada", render: (row) => new Date(row.created_at).toLocaleString() },
                 { key: "party", header: "Proveedor", render: (row) => row.party_name ?? "-" },
                 { key: "status", header: "Estado", render: (row) => row.status },
                 { key: "amount", header: "Monto", render: (row) => formatMoney(row.amount) },
+                { key: "counts", header: "Contabiliza", render: (row) => row.counts_towards_total ? "Sí" : "No" },
               ]}
               rows={report.orders}
               rowKey={(row) => row.order_id}

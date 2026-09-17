@@ -25,6 +25,7 @@ class PurchaseReportOrderRead(BaseModel):
     party_name: str | None
     status: str
     amount: float
+    counts_towards_total: bool
 
 
 class PurchaseOrdersReportRead(BaseModel):

@@ -37,7 +37,7 @@ const BASE = "/api/v1/plugins/compras/purchase";
 export type PurchaseOrdersReport = {
   summary: { total_amount: number; order_count: number; line_count: number };
   products: Array<{ product_id: string; sku: string | null; name: string | null; quantity: number; amount: number }>;
-  orders: Array<{ order_id: string; created_at: string; party_name: string | null; status: string; amount: number }>;
+  orders: Array<{ order_id: string; created_at: string; party_name: string | null; status: string; amount: number; counts_towards_total: boolean }>;
 };
 
 // ── Suppliers ──
