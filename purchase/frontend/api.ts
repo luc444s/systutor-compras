@@ -34,6 +34,12 @@ import type {
 
 const BASE = "/api/v1/plugins/compras/purchase";
 
+export type PurchaseOrdersReport = {
+  summary: { total_amount: number; order_count: number; line_count: number };
+  products: Array<{ product_id: string; sku: string | null; name: string | null; quantity: number; amount: number }>;
+  orders: Array<{ order_id: string; created_at: string; party_name: string | null; status: string; amount: number }>;
+};
+
 // ── Suppliers ──
 
 export function listSuppliers(search?: string) {
@@ -146,6 +152,10 @@ export function receiveOrder(id: string, payload: ReceiveOrderPayload) {
   });
 }
 
+export function getPurchaseOrdersReport(params: { from: string; to: string }) {
+  return apiRequest<PurchaseOrdersReport>(`${BASE}/reports/orders${buildQuery(params)}`);
+}
+
 export function commercialCloseReceipt(receiptId: string, payload: CommercialClosePayload) {
   return apiRequest<PurchaseOrder>(`${BASE}/receipts/${receiptId}/commercial-close`, {
     method: "POST",
@@ -247,4 +257,3 @@ export function annulMerchandiseReturn(orderId: string, returnId: string, reason
     body: JSON.stringify({ reason }),
   });
 }
-

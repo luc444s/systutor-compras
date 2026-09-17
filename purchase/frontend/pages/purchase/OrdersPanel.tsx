@@ -41,9 +41,10 @@ type OrdersPanelProps = {
   setError: (value: string | null) => void;
   products: ProductListItem[];
   onOrderClick: (order: PurchaseOrder) => void;
+  onOpenReport: () => void;
 };
 
-export function OrdersPanel({ error, setError, products, onOrderClick }: OrdersPanelProps) {
+export function OrdersPanel({ error, setError, products, onOrderClick, onOpenReport }: OrdersPanelProps) {
   const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState("");
   const [page, setPage] = useState(1);
@@ -150,6 +151,7 @@ export function OrdersPanel({ error, setError, products, onOrderClick }: OrdersP
         description="Gestiona órdenes a proveedores y su seguimiento comercial."
         actions={
           <div className="flex gap-2">
+            <Button variant="secondary" onClick={onOpenReport}>Reporte de compras</Button>
             <Button variant="secondary" onClick={() => setIsSuppliersOpen(true)}>Proveedores</Button>
             <Button onClick={() => { setCreateForm({ supplier_id: "", items: [], notes: "" }); setError(null); setIsCreateOpen(true); }}>Nueva orden</Button>
           </div>
